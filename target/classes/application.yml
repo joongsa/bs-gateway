@@ -1,0 +1,74 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: reservation
+          uri: http://localhost:8081
+          predicates:
+            - Path=/reservations/**,/db_reservation/**
+        - id: assignment
+          uri: http://localhost:8082
+          predicates:
+            - Path=/assignments/**,/db_assignment/**
+        - id: book
+          uri: http://localhost:8083
+          predicates:
+            - Path=/books/**,/db_book/**
+        - id: customercenter
+          uri: http://localhost:8084
+          predicates:
+            - Path=/reservationpages/**,/db_customercenter/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: reservation
+          uri: http://reservation:8080
+          predicates:
+            - Path=/reservations/**,/db_reservation/**
+        - id: assignment
+          uri: http://assignment:8080
+          predicates:
+            - Path=/assignments/**,/db_assignment/**
+        - id: book
+          uri: http://book:8080
+          predicates:
+            - Path=/books/**,/db_book/**
+        - id: customercenter
+          uri: http://customercenter:8080
+          predicates:
+            - Path=/reservationPages/**,/db_customercenter/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
